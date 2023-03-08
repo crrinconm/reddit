@@ -1,9 +1,6 @@
 package com.clone.microsvc.categories;
 
-import com.clone.microsvc.categories.models.Category;
-import com.clone.microsvc.categories.repositories.CategoryRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

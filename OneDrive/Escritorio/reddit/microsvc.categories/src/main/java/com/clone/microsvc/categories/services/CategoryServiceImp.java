@@ -3,44 +3,38 @@ package com.clone.microsvc.categories.services;
 import com.clone.microsvc.categories.dto.CategoryDTO;
 import com.clone.microsvc.categories.models.Category;
 import com.clone.microsvc.categories.repositories.CategoryRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+
 public class CategoryServiceImp implements CategoryService{
 
     @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private ModelMapper modelMapper; //Se hizo la inyección para acceder a sus metodos y hacer la conversión
+
+    //En estos metodos vamos a "igual el DTO y la entidad, dicha entidad la vamos a convertir en un DTO para que el ORM se comunique con ella
+    @Override
+    public CategoryDTO create(CategoryDTO categoryDTO) {
+        Category category= modelMapper.map(categoryDTO, Category.class); //IMPORTANTE: Debemos recibir el parámetro que estamos especificando en el tipo de clase (SIEMPRE), Por eso se hizo la conversión
+        Category SavedCategory= categoryRepository.save(category); //Esa clase anterior que convertimos, la guardamos del mismo tipo y se convierte
+        return modelMapper.map(SavedCategory,CategoryDTO.class);   //Se convierte la clase Category para que coincida con el tipo de retorno del método
+    }
 
     @Override
     public List<CategoryDTO> findAll() {
-        List<Category> categories = categoryRepository.findAll();
-
-        return categories.stream()
-                .map(category -> modelMapper.map(category, CategoryDTO.class))
-                .collect(Collectors.toList());
+        return null;
     }
 
     @Override
     public CategoryDTO findById(Long id) {
-         Category category = categoryRepository.findById(id).
-                orElseThrow(()->new EntityNotFoundException("Category not found with id" + id));                           //Aquí no se especifica el tipo de dato del Id, porque lo paso como parámetro
-        return modelMapper.map(category, CategoryDTO.class);
-    }
-
-    @Override
-    public CategoryDTO create(CategoryDTO categoryDTO) {
-        Category category= modelMapper.map(categoryDTO, Category.class);
-        Category savedCategory= categoryRepository.save(category);
-        return modelMapper.map(savedCategory, CategoryDTO.class);
+        return null;
     }
 
     @Override
@@ -50,6 +44,7 @@ public class CategoryServiceImp implements CategoryService{
 
     @Override
     public void delete(Long id) {
+
 
     }
 }
